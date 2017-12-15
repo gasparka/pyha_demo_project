@@ -1,0 +1,5 @@
+pyha
+pyhacores
+numpy
+scipy
+pytest
