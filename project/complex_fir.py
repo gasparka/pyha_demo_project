@@ -10,7 +10,7 @@ class ComplexFIR(Hardware):
     def __init__(self, taps):
         # registers
         self.fir = [FIR(taps), FIR(taps)]
-        self.outreg = ComplexSfix(right=-7)
+        # self.outreg = ComplexSfix(right=-7)
 
         # constants (written in CAPS)
         self.DELAY = self.fir[0].DELAY
@@ -20,8 +20,9 @@ class ComplexFIR(Hardware):
         out = x
         out.real = self.fir[0].main(x.real)
         out.imag = self.fir[1].main(x.imag)
-        self.outreg = out
-        return self.outreg
+        return out
+        # self.outreg = out
+        # return self.outreg
 
     def model_main(self, x):
         """ Golden output """
