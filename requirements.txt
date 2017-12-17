@@ -3,3 +3,5 @@ pyhacores
 numpy
 scipy
 pytest
+nbdime
+nbval
