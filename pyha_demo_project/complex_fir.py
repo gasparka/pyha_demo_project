@@ -61,14 +61,3 @@ def test_remez16():
     # plt.legend()
     # plt.show()
     assert sims_close(sims)
-
-
-def test_junk():
-    taps = signal.remez(16, [0, 0.1, 0.2, 0.5], [1, 0])
-    # get imulse response of the filter
-    inp = [0.0 + 0.0j] * 512
-    inp[0] = 1.0 + 1.0j
-
-    dut = ComplexFIR(taps)
-    sims = simulate(dut, inp, simulations=['MODEL', 'PYHA', 'RTL'])  # run all simulations
-    assert hardware_sims_equal(sims)
