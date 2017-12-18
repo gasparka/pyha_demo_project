@@ -4,4 +4,4 @@ numpy
 scipy
 pytest
 nbdime
-nbval
+nbval==0.7
