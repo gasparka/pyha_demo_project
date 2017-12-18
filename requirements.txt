@@ -1,7 +1,7 @@
-pyha
-pyhacores
-numpy
-scipy
-pytest
-nbdime
-nbval
+pyha==0.0.6
+pyhacores==0.1.0
+numpy==1.13.3
+scipy==1.0.0
+pytest==3.3.1
+nbdime==0.4.1
+nbval==0.7

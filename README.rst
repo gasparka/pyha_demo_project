@@ -1,35 +1,15 @@
-pyhacores
-=========
+Pyha demo project
+=================
+
+.. image:: https://travis-ci.org/gasparka/pyha_demo_project.svg?branch=master
+    :target: https://travis-ci.org/gasparka/pyha_demo_project
 
 
-.. image:: https://img.shields.io/pypi/v/pyhacores.svg
-        :target: https://pypi.python.org/pypi/pyhacores
-
-.. image:: https://img.shields.io/travis/petspats/pyhacores.svg
-        :target: https://travis-ci.org/petspats/pyhacores
-
-.. image:: https://readthedocs.org/projects/pyhacores/badge/?version=develop
-    :target: http://pyhacores.readthedocs.io/en/develop/?badge=develop
-    :alt: Documentation Status
-
-.. image:: https://pyup.io/repos/github/petspats/pyhacores/shield.svg
-     :target: https://pyup.io/repos/github/petspats/pyhacores/
+.. image:: https://pyup.io/repos/github/gasparka/pyha_demo_project/shield.svg
+     :target: https://pyup.io/repos/github/gasparka/pyha_demo_project/
      :alt: Updates
 
-.. image:: https://coveralls.io/repos/github/petspats/pyhacores/badge.svg?branch=develop
-    :target: https://coveralls.io/github/petspats/pyhacores?branch=develop
-
-..
-    .. image:: https://landscape.io/github/petspats/pyhacores/develop/landscape.svg?style=flat
-   :target: https://landscape.io/github/petspats/pyhacores/develop
-   :alt: Code Health
-
-.. image:: https://codeclimate.com/github/petspats/pyhacores/badges/gpa.svg
-   :target: https://codeclimate.com/github/petspats/pyhacores
-   :alt: Code Climate
+.. image:: https://coveralls.io/repos/github/gasparka/pyha_demo_project/badge.svg?branch=master
+    :target: https://coveralls.io/github/gasparka/pyha_demo_project?branch=master
 
 
-Cores written with `Pyha <https://github.com/petspats/pyha/>`_
-
-* Free software: Apache Software License 2.0
-* Documentation: https://pyhacores.readthedocs.io.
