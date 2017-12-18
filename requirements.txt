@@ -1,5 +1,5 @@
 pyha
-pyhacores
+pyhacores==0.1.0
 numpy
 scipy
 pytest
