@@ -14,7 +14,7 @@ install:
   - pip install coveralls
 
 script:
-  - coverage run --source pyha_demo_project -m pytest --nbval --nbdime  --sanitize-with nbval_sanitaze.cfg
+  - coverage run --source pyha_demo_project -m pytest -s --nbval --nbdime  --sanitize-with nbval_sanitaze.cfg
 
 after_success:
   - coveralls
