@@ -34,8 +34,7 @@ def test_small():
     dut = ComplexFIR(taps)
     inp = np.random.uniform(-1, 1, 512) + np.random.uniform(-1, 1, 512) * 1j
 
-    sims = simulate(dut, inp, simulations=['MODEL', 'PYHA', 'RTL', 'GATE'],
-                    conversion_path='/home/gaspar/git/pyha_demo_project/conversion_src')
+    sims = simulate(dut, inp)
 
     # import matplotlib.pyplot as plt
     # plt.plot(sims['MODEL'], label='MODEL')
@@ -51,8 +50,7 @@ def test_remez16():
     dut = ComplexFIR(taps)
     inp = np.random.uniform(-1, 1, 512) + np.random.uniform(-1, 1, 512) * 1j
 
-    sims = simulate(dut, inp, simulations=['MODEL', 'PYHA', 'RTL'],
-                    conversion_path='/home/gaspar/git/pyha/playground')
+    sims = simulate(dut, inp)
 
     # import matplotlib.pyplot as plt
     # plt.plot(sims['MODEL'], label='MODEL')
