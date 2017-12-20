@@ -29,41 +29,33 @@ package ComplexFIR_0 is
     end record;
     type ComplexFIR_0_self_t_list_t is array (natural range <>) of ComplexFIR_0.self_t;
 
-    procedure \_pyha_init\(self:inout self_t);
-
-    procedure \_pyha_reset_constants\(self:inout self_t);
-
-    procedure \_pyha_reset\(self:inout self_t);
-
-    procedure \_pyha_deepcopy\(self:inout self_t; other: in self_t);
-
-    procedure \_pyha_list_deepcopy\(self:inout ComplexFIR_0_self_t_list_t; other: in ComplexFIR_0_self_t_list_t);
-
-    procedure \_pyha_update_registers\(self:inout self_t);
-
     procedure main(self:inout self_t; x: ComplexSfix_0.self_t; ret_0:out ComplexSfix_0.self_t);
+
+    -- internal pyha functions
+    procedure pyha_update_registers(self:inout self_t);
+    procedure pyha_reset(self:inout self_t);
+    procedure pyha_init_next(self:inout self_t);
+    procedure pyha_reset_constants(self:inout self_t);
+    procedure pyha_deepcopy(self:inout self_t; other: in self_t);
+    procedure pyha_list_deepcopy(self:inout ComplexFIR_0_self_t_list_t; other: in ComplexFIR_0_self_t_list_t);
 end package;
 
 package body ComplexFIR_0 is
-    procedure \_pyha_init\(self:inout self_t) is
+    procedure main(self:inout self_t; x: ComplexSfix_0.self_t; ret_0:out ComplexSfix_0.self_t) is
+
+        variable \out\: ComplexSfix_0.self_t;
     begin
-        FIR_2.\_pyha_init\(self.fir(0));
-        FIR_2.\_pyha_init\(self.fir(1));
-        self.\next\.DELAY := self.DELAY;
-        self.\next\.TAPS := self.TAPS;
+        \out\ := x;
+        FIR_2.main(self.fir(0), x.real, ret_0=>\out\.real);
+        FIR_2.main(self.fir(1), x.imag, ret_0=>\out\.imag);
+        ret_0 := \out\;
+        return;
+        -- self.outreg = out
+        -- return self.outreg
     end procedure;
 
-    procedure \_pyha_reset_constants\(self:inout self_t) is
-    begin
-        self.fir(0).DELAY := 2;
-        self.fir(0).TAPS := (Sfix(-0.040802001953125, 0, -17), Sfix(0.1103363037109375, 0, -17), Sfix(0.21150970458984375, 0, -17), Sfix(0.29248046875, 0, -17), Sfix(0.29248046875, 0, -17), Sfix(0.21150970458984375, 0, -17), Sfix(0.1103363037109375, 0, -17), Sfix(-0.040802001953125, 0, -17));
-        self.fir(1).DELAY := 2;
-        self.fir(1).TAPS := (Sfix(-0.040802001953125, 0, -17), Sfix(0.1103363037109375, 0, -17), Sfix(0.21150970458984375, 0, -17), Sfix(0.29248046875, 0, -17), Sfix(0.29248046875, 0, -17), Sfix(0.21150970458984375, 0, -17), Sfix(0.1103363037109375, 0, -17), Sfix(-0.040802001953125, 0, -17));
-        self.DELAY := 2;
-        self.TAPS := (Sfix(-0.040802001953125, 0, -17), Sfix(0.1103363037109375, 0, -17), Sfix(0.21150970458984375, 0, -17), Sfix(0.29248046875, 0, -17), Sfix(0.29248046875, 0, -17), Sfix(0.21150970458984375, 0, -17), Sfix(0.1103363037109375, 0, -17), Sfix(-0.040802001953125, 0, -17));
-    end procedure;
-
-    procedure \_pyha_reset\(self:inout self_t) is
+    procedure pyha_reset(self:inout self_t) is
+        -- executed on reset signal. Reset values are determined from initial values of Python variables.
     begin
         self.fir(0).\next\.DELAY := 2;
         self.fir(0).\next\.TAPS := (Sfix(-0.040802001953125, 0, -17), Sfix(0.1103363037109375, 0, -17), Sfix(0.21150970458984375, 0, -17), Sfix(0.29248046875, 0, -17), Sfix(0.29248046875, 0, -17), Sfix(0.21150970458984375, 0, -17), Sfix(0.1103363037109375, 0, -17), Sfix(-0.040802001953125, 0, -17));
@@ -75,10 +67,39 @@ package body ComplexFIR_0 is
         self.fir(1).\next\.\out\ := Sfix(0.0, 0, -17);
         self.\next\.DELAY := 2;
         self.\next\.TAPS := (Sfix(-0.040802001953125, 0, -17), Sfix(0.1103363037109375, 0, -17), Sfix(0.21150970458984375, 0, -17), Sfix(0.29248046875, 0, -17), Sfix(0.29248046875, 0, -17), Sfix(0.21150970458984375, 0, -17), Sfix(0.1103363037109375, 0, -17), Sfix(-0.040802001953125, 0, -17));
-        \_pyha_update_registers\(self);
+        pyha_update_registers(self);
     end procedure;
 
-    procedure \_pyha_deepcopy\(self:inout self_t; other: in self_t) is
+    procedure pyha_update_registers(self:inout self_t) is
+        -- loads 'next' values to registers, executed on clock rising edge
+    begin
+        FIR_2.pyha_update_registers(self.fir(0));
+        FIR_2.pyha_update_registers(self.fir(1));
+    end procedure;
+
+    procedure pyha_init_next(self:inout self_t) is
+        -- sets all .next's to current register values, executed before 'main'. 
+        -- thanks to this, '.next' variables are always written before read, so they can never be registers
+    begin
+        FIR_2.pyha_init_next(self.fir(0));
+        FIR_2.pyha_init_next(self.fir(1));
+        self.\next\.DELAY := self.DELAY;
+        self.\next\.TAPS := self.TAPS;
+    end procedure;
+
+    procedure pyha_reset_constants(self:inout self_t) is
+        -- reset CONSTANTS, executed before 'main'. Helps synthesis tools to determine constants.
+    begin
+        self.fir(0).DELAY := 2;
+        self.fir(0).TAPS := (Sfix(-0.040802001953125, 0, -17), Sfix(0.1103363037109375, 0, -17), Sfix(0.21150970458984375, 0, -17), Sfix(0.29248046875, 0, -17), Sfix(0.29248046875, 0, -17), Sfix(0.21150970458984375, 0, -17), Sfix(0.1103363037109375, 0, -17), Sfix(-0.040802001953125, 0, -17));
+        self.fir(1).DELAY := 2;
+        self.fir(1).TAPS := (Sfix(-0.040802001953125, 0, -17), Sfix(0.1103363037109375, 0, -17), Sfix(0.21150970458984375, 0, -17), Sfix(0.29248046875, 0, -17), Sfix(0.29248046875, 0, -17), Sfix(0.21150970458984375, 0, -17), Sfix(0.1103363037109375, 0, -17), Sfix(-0.040802001953125, 0, -17));
+        self.DELAY := 2;
+        self.TAPS := (Sfix(-0.040802001953125, 0, -17), Sfix(0.1103363037109375, 0, -17), Sfix(0.21150970458984375, 0, -17), Sfix(0.29248046875, 0, -17), Sfix(0.29248046875, 0, -17), Sfix(0.21150970458984375, 0, -17), Sfix(0.1103363037109375, 0, -17), Sfix(-0.040802001953125, 0, -17));
+    end procedure;
+
+    procedure pyha_deepcopy(self:inout self_t; other: in self_t) is
+        -- copy 'other' to 'self.next'. ':=' cannot be used as it would directly copy to 'self'
     begin
         self.fir(0).\next\.DELAY := other.fir(0).DELAY;
         self.fir(0).\next\.TAPS := other.fir(0).TAPS;
@@ -92,29 +113,12 @@ package body ComplexFIR_0 is
         self.\next\.TAPS := other.TAPS;
     end procedure;
 
-    procedure \_pyha_list_deepcopy\(self:inout ComplexFIR_0_self_t_list_t; other: in ComplexFIR_0_self_t_list_t) is
+    procedure pyha_list_deepcopy(self:inout ComplexFIR_0_self_t_list_t; other: in ComplexFIR_0_self_t_list_t) is
+        -- run deepcopy for each list element
     begin
         for i in self'range loop
-            \_pyha_deepcopy\(self(i), other(i));
+            pyha_deepcopy(self(i), other(i));
         end loop;
     end procedure;
 
-    procedure \_pyha_update_registers\(self:inout self_t) is
-    begin
-        FIR_2.\_pyha_update_registers\(self.fir(0));
-        FIR_2.\_pyha_update_registers\(self.fir(1));
-    end procedure;
-
-    procedure main(self:inout self_t; x: ComplexSfix_0.self_t; ret_0:out ComplexSfix_0.self_t) is
-
-        variable \out\: ComplexSfix_0.self_t;
-    begin
-        \out\ := x;
-        FIR_2.main(self.fir(0), x.real, ret_0=>\out\.real);
-        FIR_2.main(self.fir(1), x.imag, ret_0=>\out\.imag);
-        ret_0 := \out\;
-        return;
-        -- self.outreg = out
-        -- return self.outreg
-    end procedure;
 end package body;

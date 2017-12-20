@@ -30,7 +30,7 @@ architecture arch of top is
     function init_regs return ComplexFIR_0.self_t is
         variable self: ComplexFIR_0.self_t;
     begin
-          ComplexFIR_0.\_pyha_reset\(self);
+          ComplexFIR_0.pyha_reset(self);
           return self;
     end function;
 
@@ -52,8 +52,8 @@ begin
         var_in0.imag := Sfix(in0(35 downto 18), 0, -17);
 
         --call the main entry
-        ComplexFIR_0.\_pyha_init\(self_var);
-        ComplexFIR_0.\_pyha_reset_constants\(self_var);
+        ComplexFIR_0.pyha_init_next(self_var);
+        ComplexFIR_0.pyha_reset_constants(self_var);
         ComplexFIR_0.main(self_var, var_in0, ret_0=>var_out0);
 
         --convert normal types to slv
@@ -62,13 +62,12 @@ begin
 
 
         if (not rst_n) then
-            ComplexFIR_0.\_pyha_reset\(self_var);
+            ComplexFIR_0.pyha_reset(self_var);
             self <= self_var;
         elsif rising_edge(clk) then
             -- look #153 if you want enable
             --if enable then
-                ComplexFIR_0.\_pyha_update_registers\(self_var);
-                ComplexFIR_0.\_pyha_reset_constants\(self_var);
+                ComplexFIR_0.pyha_update_registers(self_var);
                 self <= self_var;
             --end if;
         end if;

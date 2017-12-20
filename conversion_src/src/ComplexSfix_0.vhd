@@ -12,7 +12,7 @@ library work;
     use work.all;
 
 
--- Complex type with 'real' and 'imag' elements, to access underlying Sfix elements.
+-- Complex type with 'real' and 'imag' elements for underlying Sfix elements.
 -- :param val:
 -- :param left: left bound for both components
 -- :param right: right bound for both components
@@ -27,7 +27,7 @@ library work;
 -- Another way to construct it:
 -- >>> a = Sfix(-0.5, 0, -17)
 -- >>> b = Sfix(0.5, 0, -17)
--- >>> _ComplexSfixPy(a, b)
+-- >>> ComplexSfix(a, b)
 -- -0.50+0.50j [0:-17]
 package ComplexSfix_0 is
     type next_t is record
@@ -42,57 +42,62 @@ package ComplexSfix_0 is
     end record;
     type ComplexSfix_0_self_t_list_t is array (natural range <>) of ComplexSfix_0.self_t;
 
-    procedure \_pyha_init\(self:inout self_t);
 
-    procedure \_pyha_reset_constants\(self:inout self_t);
 
-    procedure \_pyha_reset\(self:inout self_t);
-
-    procedure \_pyha_deepcopy\(self:inout self_t; other: in self_t);
-
-    procedure \_pyha_list_deepcopy\(self:inout ComplexSfix_0_self_t_list_t; other: in ComplexSfix_0_self_t_list_t);
-
-    procedure \_pyha_update_registers\(self:inout self_t);
-
+    -- internal pyha functions
+    procedure pyha_update_registers(self:inout self_t);
+    procedure pyha_reset(self:inout self_t);
+    procedure pyha_init_next(self:inout self_t);
+    procedure pyha_reset_constants(self:inout self_t);
+    procedure pyha_deepcopy(self:inout self_t; other: in self_t);
+    procedure pyha_list_deepcopy(self:inout ComplexSfix_0_self_t_list_t; other: in ComplexSfix_0_self_t_list_t);
 end package;
 
 package body ComplexSfix_0 is
-    procedure \_pyha_init\(self:inout self_t) is
-    begin
-        self.\next\.real := self.real;
-        self.\next\.imag := self.imag;
-    end procedure;
 
-    procedure \_pyha_reset_constants\(self:inout self_t) is
-    begin
 
-    end procedure;
-
-    procedure \_pyha_reset\(self:inout self_t) is
+    procedure pyha_reset(self:inout self_t) is
+        -- executed on reset signal. Reset values are determined from initial values of Python variables.
     begin
         self.\next\.real := Sfix(0.097625732421875, 0, -17);
         self.\next\.imag := Sfix(0.480194091796875, 0, -17);
-        \_pyha_update_registers\(self);
+        pyha_update_registers(self);
     end procedure;
 
-    procedure \_pyha_deepcopy\(self:inout self_t; other: in self_t) is
-    begin
-        self.\next\.real := other.real;
-        self.\next\.imag := other.imag;
-    end procedure;
-
-    procedure \_pyha_list_deepcopy\(self:inout ComplexSfix_0_self_t_list_t; other: in ComplexSfix_0_self_t_list_t) is
-    begin
-        for i in self'range loop
-            \_pyha_deepcopy\(self(i), other(i));
-        end loop;
-    end procedure;
-
-    procedure \_pyha_update_registers\(self:inout self_t) is
+    procedure pyha_update_registers(self:inout self_t) is
+        -- loads 'next' values to registers, executed on clock rising edge
     begin
         self.real := self.\next\.real;
         self.imag := self.\next\.imag;
     end procedure;
 
+    procedure pyha_init_next(self:inout self_t) is
+        -- sets all .next's to current register values, executed before 'main'. 
+        -- thanks to this, '.next' variables are always written before read, so they can never be registers
+    begin
+        self.\next\.real := self.real;
+        self.\next\.imag := self.imag;
+    end procedure;
+
+    procedure pyha_reset_constants(self:inout self_t) is
+        -- reset CONSTANTS, executed before 'main'. Helps synthesis tools to determine constants.
+    begin
+
+    end procedure;
+
+    procedure pyha_deepcopy(self:inout self_t; other: in self_t) is
+        -- copy 'other' to 'self.next'. ':=' cannot be used as it would directly copy to 'self'
+    begin
+        self.\next\.real := other.real;
+        self.\next\.imag := other.imag;
+    end procedure;
+
+    procedure pyha_list_deepcopy(self:inout ComplexSfix_0_self_t_list_t; other: in ComplexSfix_0_self_t_list_t) is
+        -- run deepcopy for each list element
+    begin
+        for i in self'range loop
+            pyha_deepcopy(self(i), other(i));
+        end loop;
+    end procedure;
 
 end package body;
