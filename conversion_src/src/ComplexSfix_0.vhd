@@ -60,7 +60,7 @@ package body ComplexSfix_0 is
         -- executed on reset signal. Reset values are determined from initial values of Python variables.
     begin
         self.\next\.real := Sfix(0.097625732421875, 0, -17);
-        self.\next\.imag := Sfix(0.480194091796875, 0, -17);
+        self.\next\.imag := Sfix(0.556549072265625, 0, -17);
         pyha_update_registers(self);
     end procedure;
 

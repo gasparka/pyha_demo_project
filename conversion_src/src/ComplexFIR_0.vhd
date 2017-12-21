@@ -50,8 +50,6 @@ package body ComplexFIR_0 is
         FIR_2.main(self.fir(1), x.imag, ret_0=>\out\.imag);
         ret_0 := \out\;
         return;
-        -- self.outreg = out
-        -- return self.outreg
     end procedure;
 
     procedure pyha_reset(self:inout self_t) is
