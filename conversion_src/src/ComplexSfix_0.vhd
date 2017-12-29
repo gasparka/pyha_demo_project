@@ -12,11 +12,12 @@ library work;
     use work.all;
 
 
--- Complex type with 'real' and 'imag' elements for underlying Sfix elements.
+-- Complex number with ``.real`` and ``.imag`` elements. Default type is ``ComplexSfix(left=0, right=-17)``, Python ``complex`` values will be converte to this.
 -- :param val:
 -- :param left: left bound for both components
 -- :param right: right bound for both components
--- :param overflow_style: fixed_saturate(default) or fixed_wrap
+-- :param overflow_style: 'wrap' (default) or 'saturate'.
+-- :param round_style: 'truncate' (default) or 'round'
 -- >>> a = ComplexSfix(0.45 + 0.88j, left=0, right=-17)
 -- >>> a
 -- 0.45+0.88j [0:-17]
@@ -59,8 +60,8 @@ package body ComplexSfix_0 is
     procedure pyha_reset(self:inout self_t) is
         -- executed on reset signal. Reset values are determined from initial values of Python variables.
     begin
-        self.\next\.real := Sfix(0.097625732421875, 0, -17);
-        self.\next\.imag := Sfix(0.556549072265625, 0, -17);
+        self.\next\.real := Sfix(0.09999847412109375, 0, -17);
+        self.\next\.imag := Sfix(0.09999847412109375, 0, -17);
         pyha_update_registers(self);
     end procedure;
 
