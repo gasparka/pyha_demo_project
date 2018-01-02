@@ -12,5 +12,5 @@ library work;
 
 package Typedefs is
     type sfixed0downto_17_list_t is array (natural range <>) of sfixed(0 downto -17);
-    type sfixed1downto_34_list_t is array (natural range <>) of sfixed(1 downto -34);
+    type sfixed1downto_23_list_t is array (natural range <>) of sfixed(1 downto -23);
 end package;

@@ -1,7 +1,7 @@
 Start
 -----
-Hello.
-This is going to be a quick overvoew of pyha, which helps you to create DSP hardware in Python.
+Hi!
+This is going to be a quick intro to Pyha, which is a Python based HDL, mostly focused on DSP.
 That project contains an notebook that designs an baseband filter.
 
 Quick outline

@@ -27,17 +27,17 @@ end entity;
 
 architecture arch of top is
     -- make reset procedure callable
-    function init_regs return ComplexFIR_0.self_t is
-        variable self: ComplexFIR_0.self_t;
+    function init_regs return BasebandFilter_0.self_t is
+        variable self: BasebandFilter_0.self_t;
     begin
-          ComplexFIR_0.pyha_reset(self);
+          BasebandFilter_0.pyha_reset(self);
           return self;
     end function;
 
-    signal self: ComplexFIR_0.self_t := init_regs;
+    signal self: BasebandFilter_0.self_t := init_regs;
 begin
     process(clk, rst_n)
-        variable self_var: ComplexFIR_0.self_t;
+        variable self_var: BasebandFilter_0.self_t;
         -- input variables
         variable var_in0: ComplexSfix_0.self_t;
 
@@ -52,9 +52,9 @@ begin
         var_in0.imag := Sfix(in0(35 downto 18), 0, -17);
 
         --call the main entry
-        ComplexFIR_0.pyha_init_next(self_var);
-        ComplexFIR_0.pyha_reset_constants(self_var);
-        ComplexFIR_0.main(self_var, var_in0, ret_0=>var_out0);
+        BasebandFilter_0.pyha_init_next(self_var);
+        BasebandFilter_0.pyha_reset_constants(self_var);
+        BasebandFilter_0.main(self_var, var_in0, ret_0=>var_out0);
 
         --convert normal types to slv
         out0(17 downto 0) <= to_slv(var_out0.real);
@@ -62,12 +62,12 @@ begin
 
 
         if (not rst_n) then
-            ComplexFIR_0.pyha_reset(self_var);
+            BasebandFilter_0.pyha_reset(self_var);
             self <= self_var;
         elsif rising_edge(clk) then
             -- look #153 if you want enable
             --if enable then
-                ComplexFIR_0.pyha_update_registers(self_var);
+                BasebandFilter_0.pyha_update_registers(self_var);
                 self <= self_var;
             --end if;
         end if;

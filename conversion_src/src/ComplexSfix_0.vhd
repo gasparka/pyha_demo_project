@@ -60,8 +60,8 @@ package body ComplexSfix_0 is
     procedure pyha_reset(self:inout self_t) is
         -- executed on reset signal. Reset values are determined from initial values of Python variables.
     begin
-        self.\next\.real := Sfix(0.09999847412109375, 0, -17);
-        self.\next\.imag := Sfix(0.09999847412109375, 0, -17);
+        self.\next\.real := Sfix(0.07321929931640625, 0, -17);
+        self.\next\.imag := Sfix(0.36014556884765625, 0, -17);
         pyha_update_registers(self);
     end procedure;
 
