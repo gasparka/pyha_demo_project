@@ -1,0 +1,84 @@
+Start
+-----
+Hello.
+This is going to be a quick overvoew of pyha, which helps you to create DSP hardware in Python.
+That project contains an notebook that designs an baseband filter.
+
+Quick outline
+-------------
+Baseband filter, simulate, look at responses and lastly turn it to unit test.
+
+
+Filter & Diagram
+----------------
+128 taps and over 100 db attenuation - quite a lot.
+
+Going to make a baseband filter, meaning that we have complex input ant we apply the filter on
+'real' and 'imag' parts. And the output is also complex.
+
+
+Pyha model
+----------
+
+Point of OOP - easy reuse, which is not the case with conventional HDL's. Here we can just define the list and use 
+it.
+
+Make use of Pyhacores -> show list of components.
+Point of OOP - easy reuse.
+
+Luckly for use it has the FIR filter - dont have to start from scratch.
+
+Start from model main instead?
+Kas ma saan lyhidalt seda teha??
+
+
+Impulse response
+----------------
+
+input -> impulse, each element tied to clock cycle
+4 simulations:
+* MODEL - simple map
+* PYHA - map to 'main', converts inputs to sfix
+* RTL - GHDL and COCOTB
+* GATE - Intel Quartus Netlist
+
+Sim results
+-----------
+Converted back to floats... you dont have to think about Fixed point stuff as long you keep with the default.
+
+hardware_sims_equal -> PYHA, RTL, GATE are dead even
+sims_close -> MODEL as golden output, much less restricted..
+
+Freq_response: BTW PYHA is equal to all 
+
+Very likely this is due to fixed point effects...but lets verify this, very simple to do in Pyha.
+Now we know that algorithmically stuff is correct, just an fixed point limitation.
+
+Sine response
+-------------
+
+Zoom in and show that not quite equal..
+
+
+Noise
+-----
+
+Very brief...
+
+
+Unit tests
+----------
+
+Turn off interactive plots... + GATE sim
+
+Show Github stuff?
+
+
+Next time
+---------
+
+
+
+
+
+

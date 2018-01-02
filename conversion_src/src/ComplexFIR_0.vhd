@@ -17,14 +17,12 @@ library work;
 package ComplexFIR_0 is
     type next_t is record
         fir: FIR_2.FIR_2_self_t_list_t(0 to 1);
-        outreg: ComplexSfix_0.self_t;
         DELAY: integer;
         TAPS: Typedefs.sfixed0downto_17_list_t(0 to 7);
     end record;
 
     type self_t is record
         fir: FIR_2.FIR_2_self_t_list_t(0 to 1);
-        outreg: ComplexSfix_0.self_t;
         DELAY: integer;
         TAPS: Typedefs.sfixed0downto_17_list_t(0 to 7);
         \next\: next_t;
@@ -45,19 +43,26 @@ end package;
 package body ComplexFIR_0 is
     procedure main(self:inout self_t; x: ComplexSfix_0.self_t; ret_0:out ComplexSfix_0.self_t) is
 
+        variable \out\: ComplexSfix_0.self_t;
         variable pyha_ret_0: sfixed(0 downto -17);
         variable pyha_ret_1: sfixed(0 downto -17);
     begin
-        -- out = x
-        -- out.real = self.fir[0].main(x.real)
-        -- out.imag = self.fir[1].main(x.imag)
-        -- return out
+        -- real = self.fir[0].main(x.real)
+        -- imag = self.fir[1].main(x.imag)
+        -- ret = ComplexSfix(real, imag)
+        -- return ret
+
+        \out\ := x;
         FIR_2.main(self.fir(0), x.real, pyha_ret_0);
-        self.outreg.\next\.real := resize(pyha_ret_0, 0, -17, fixed_wrap, fixed_truncate);
+        \out\.real := pyha_ret_0;
         FIR_2.main(self.fir(1), x.imag, pyha_ret_1);
-        self.outreg.\next\.imag := resize(pyha_ret_1, 0, -17, fixed_wrap, fixed_truncate);
-        ret_0 := self.outreg;
+        \out\.imag := pyha_ret_1;
+        ret_0 := \out\;
         return;
+
+        -- self.outreg.real = self.fir[0].main(x.real)
+        -- self.outreg.imag = self.fir[1].main(x.imag)
+        -- return self.outreg
     end procedure;
 
     procedure pyha_reset(self:inout self_t) is
@@ -71,8 +76,6 @@ package body ComplexFIR_0 is
         self.fir(1).\next\.TAPS := (Sfix(-0.040802001953125, 0, -17), Sfix(0.1103363037109375, 0, -17), Sfix(0.21150970458984375, 0, -17), Sfix(0.29248046875, 0, -17), Sfix(0.29248046875, 0, -17), Sfix(0.21150970458984375, 0, -17), Sfix(0.1103363037109375, 0, -17), Sfix(-0.040802001953125, 0, -17));
         self.fir(1).\next\.acc := (Sfix(0.0, 1, -34), Sfix(0.0, 1, -34), Sfix(0.0, 1, -34), Sfix(0.0, 1, -34), Sfix(0.0, 1, -34), Sfix(0.0, 1, -34), Sfix(0.0, 1, -34), Sfix(0.0, 1, -34));
         self.fir(1).\next\.\out\ := Sfix(0.0, 0, -17);
-        self.outreg.\next\.real := Sfix(0.0, 0, -17);
-        self.outreg.\next\.imag := Sfix(0.0, 0, -17);
         self.\next\.DELAY := 2;
         self.\next\.TAPS := (Sfix(-0.040802001953125, 0, -17), Sfix(0.1103363037109375, 0, -17), Sfix(0.21150970458984375, 0, -17), Sfix(0.29248046875, 0, -17), Sfix(0.29248046875, 0, -17), Sfix(0.21150970458984375, 0, -17), Sfix(0.1103363037109375, 0, -17), Sfix(-0.040802001953125, 0, -17));
         pyha_update_registers(self);
@@ -83,7 +86,6 @@ package body ComplexFIR_0 is
     begin
         FIR_2.pyha_update_registers(self.fir(0));
         FIR_2.pyha_update_registers(self.fir(1));
-        ComplexSfix_0.pyha_update_registers(self.outreg);
     end procedure;
 
     procedure pyha_init_next(self:inout self_t) is
@@ -92,7 +94,6 @@ package body ComplexFIR_0 is
     begin
         FIR_2.pyha_init_next(self.fir(0));
         FIR_2.pyha_init_next(self.fir(1));
-        ComplexSfix_0.pyha_init_next(self.outreg);
         self.\next\.DELAY := self.DELAY;
         self.\next\.TAPS := self.TAPS;
     end procedure;
@@ -119,8 +120,6 @@ package body ComplexFIR_0 is
         self.fir(1).\next\.TAPS := other.fir(1).TAPS;
         self.fir(1).\next\.acc := other.fir(1).acc;
         self.fir(1).\next\.\out\ := other.fir(1).\out\;
-        self.outreg.\next\.real := other.outreg.real;
-        self.outreg.\next\.imag := other.outreg.imag;
         self.\next\.DELAY := other.DELAY;
         self.\next\.TAPS := other.TAPS;
     end procedure;
