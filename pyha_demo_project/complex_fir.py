@@ -1,10 +1,28 @@
 import numpy as np
 import scipy.signal
-from examples.present.complex_fir import ComplexFIR
 from pyhacores.filter import FIR
-from pyha import Hardware, simulate, sims_close
+from pyha import Hardware, simulate, sims_close, Complex
 
 np.random.seed(0)  # reproduce tests
+
+
+def plot_freqz(b):
+    import matplotlib.pyplot as plt
+    from scipy import signal
+    w, h = signal.freqz(b)
+
+    fig, ax1 = plt.subplots(1, 1)
+    plt.title('Digital filter frequency response')
+    ax1.plot(w / np.pi, 20 * np.log10(abs(h)), 'b')
+    ax1.set_ylabel('Amplitude [dB]', color='b')
+    ax1.set_xlabel('Frequency')
+    plt.grid()
+    ax2 = ax1.twinx()
+    angles = np.unwrap(np.angle(h))
+    ax2.plot(w / np.pi, angles, 'g')
+    ax2.set_ylabel('Angle (radians)', color='g')
+    ax2.axis('tight')
+    plt.show()
 
 
 class BasebandFilter(Hardware):
@@ -17,10 +35,9 @@ class BasebandFilter(Hardware):
 
     def main(self, x):
         """ Apply FIR filter to 'real' and 'imag' channels """
-        out = x
-        out.real = self.fir[0].main(x.real)
-        out.imag = self.fir[1].main(x.imag)
-        return out
+        real = self.fir[0].main(x.real)
+        imag = self.fir[1].main(x.imag)
+        return Complex(real, imag)
 
     def model_main(self, x):
         """ Golden output """
