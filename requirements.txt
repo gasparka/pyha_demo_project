@@ -1,4 +1,4 @@
-pyha==0.0.6
+pyha==0.0.7
 pyhacores==0.1.0
 numpy==1.13.3
 scipy==1.0.0
