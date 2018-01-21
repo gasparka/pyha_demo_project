@@ -16,15 +16,15 @@ library work;
 package FIR_2 is
     type next_t is record
         DELAY: integer;
-        TAPS: Typedefs.sfixed0downto_17_list_t(0 to 7);
-        acc: Typedefs.sfixed1downto_23_list_t(0 to 7);
+        TAPS: Typedefs.sfixed0downto_17_list_t(0 to 63);
+        acc: Typedefs.sfixed1downto_23_list_t(0 to 63);
         \out\: sfixed(0 downto -17);
     end record;
 
     type self_t is record
         DELAY: integer;
-        TAPS: Typedefs.sfixed0downto_17_list_t(0 to 7);
-        acc: Typedefs.sfixed1downto_23_list_t(0 to 7);
+        TAPS: Typedefs.sfixed0downto_17_list_t(0 to 63);
+        acc: Typedefs.sfixed1downto_23_list_t(0 to 63);
         \out\: sfixed(0 downto -17);
         \next\: next_t;
     end record;
@@ -33,7 +33,7 @@ package FIR_2 is
     procedure main(self:inout self_t; x: sfixed(0 downto -17); ret_0:out sfixed(0 downto -17));
 
     -- internal pyha functions
-    function FIR(acc: Typedefs.sfixed1downto_23_list_t(0 to 7); \out\: sfixed(0 downto -17)) return self_t;
+    function FIR(acc: Typedefs.sfixed1downto_23_list_t(0 to 63); \out\: sfixed(0 downto -17)) return self_t;
     procedure pyha_update_registers(self:inout self_t);
     procedure pyha_reset(self:inout self_t);
     procedure pyha_init_next(self:inout self_t);
@@ -47,20 +47,17 @@ package body FIR_2 is
     -- Transposed FIR structure
         variable i: integer;
     begin
-        for i in self.acc'range loop
-            if i = 0 then
-                self.\next\.acc(0) := resize(x * self.TAPS(self.TAPS'length-1), 1, -23, fixed_wrap, fixed_truncate);
-            else
-                self.\next\.acc(i) := resize(self.acc(i - 1) + x * self.TAPS(self.TAPS'length - 1 - i), 1, -23, fixed_wrap, fixed_truncate);
+        self.\next\.acc(0) := resize(x * self.TAPS(self.TAPS'length-1), 1, -23, fixed_wrap, fixed_truncate);
+        for i in 1 to (self.acc'length) - 1 loop
+            self.\next\.acc(i) := resize(self.acc(i - 1) + x * self.TAPS(self.TAPS'length - 1 - i), 1, -23, fixed_wrap, fixed_truncate);
 
-            end if;
         end loop;
         self.\next\.\out\ := resize(self.acc(self.acc'length-1), 0, -17, fixed_saturate, fixed_truncate);
         ret_0 := self.\out\;
         return;
     end procedure;
 
-    function FIR(acc: Typedefs.sfixed1downto_23_list_t(0 to 7); \out\: sfixed(0 downto -17)) return self_t is
+    function FIR(acc: Typedefs.sfixed1downto_23_list_t(0 to 63); \out\: sfixed(0 downto -17)) return self_t is
         -- limited constructor
         variable self: self_t;
     begin
@@ -74,8 +71,8 @@ package body FIR_2 is
         -- executed on reset signal. Reset values are determined from initial values of Python variables.
     begin
         self.\next\.DELAY := 2;
-        self.\next\.TAPS := (Sfix(-0.040802001953125, 0, -17), Sfix(0.1103363037109375, 0, -17), Sfix(0.21150970458984375, 0, -17), Sfix(0.29248046875, 0, -17), Sfix(0.29248046875, 0, -17), Sfix(0.21150970458984375, 0, -17), Sfix(0.1103363037109375, 0, -17), Sfix(-0.040802001953125, 0, -17));
-        self.\next\.acc := (Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23));
+        self.\next\.TAPS := (Sfix(7.62939453125e-06, 0, -17), Sfix(0.000152587890625, 0, -17), Sfix(7.62939453125e-06, 0, -17), Sfix(-0.00032806396484375, 0, -17), Sfix(-9.1552734375e-05, 0, -17), Sfix(0.00064849853515625, 0, -17), Sfix(0.00031280517578125, 0, -17), Sfix(-0.0011138916015625, 0, -17), Sfix(-0.0007781982421875, 0, -17), Sfix(0.00171661376953125, 0, -17), Sfix(0.001617431640625, 0, -17), Sfix(-0.002410888671875, 0, -17), Sfix(-0.00298309326171875, 0, -17), Sfix(0.0030975341796875, 0, -17), Sfix(0.0050506591796875, 0, -17), Sfix(-0.00360107421875, 0, -17), Sfix(-0.00800323486328125, 0, -17), Sfix(0.003662109375, 0, -17), Sfix(0.01206207275390625, 0, -17), Sfix(-0.0029144287109375, 0, -17), Sfix(-0.0174713134765625, 0, -17), Sfix(0.00083160400390625, 0, -17), Sfix(0.02465057373046875, 0, -17), Sfix(0.00342559814453125, 0, -17), Sfix(-0.034454345703125, 0, -17), Sfix(-0.01151275634765625, 0, -17), Sfix(0.04907989501953125, 0, -17), Sfix(0.02765655517578125, 0, -17), Sfix(-0.0761871337890625, 0, -17), Sfix(-0.0692596435546875, 0, -17), Sfix(0.1654205322265625, 0, -17), Sfix(0.4317626953125, 0, -17), Sfix(0.4317626953125, 0, -17), Sfix(0.1654205322265625, 0, -17), Sfix(-0.0692596435546875, 0, -17), Sfix(-0.0761871337890625, 0, -17), Sfix(0.02765655517578125, 0, -17), Sfix(0.04907989501953125, 0, -17), Sfix(-0.01151275634765625, 0, -17), Sfix(-0.034454345703125, 0, -17), Sfix(0.00342559814453125, 0, -17), Sfix(0.02465057373046875, 0, -17), Sfix(0.00083160400390625, 0, -17), Sfix(-0.0174713134765625, 0, -17), Sfix(-0.0029144287109375, 0, -17), Sfix(0.01206207275390625, 0, -17), Sfix(0.003662109375, 0, -17), Sfix(-0.00800323486328125, 0, -17), Sfix(-0.00360107421875, 0, -17), Sfix(0.0050506591796875, 0, -17), Sfix(0.0030975341796875, 0, -17), Sfix(-0.00298309326171875, 0, -17), Sfix(-0.002410888671875, 0, -17), Sfix(0.001617431640625, 0, -17), Sfix(0.00171661376953125, 0, -17), Sfix(-0.0007781982421875, 0, -17), Sfix(-0.0011138916015625, 0, -17), Sfix(0.00031280517578125, 0, -17), Sfix(0.00064849853515625, 0, -17), Sfix(-9.1552734375e-05, 0, -17), Sfix(-0.00032806396484375, 0, -17), Sfix(7.62939453125e-06, 0, -17), Sfix(0.000152587890625, 0, -17), Sfix(7.62939453125e-06, 0, -17));
+        self.\next\.acc := (Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23), Sfix(0.0, 1, -23));
         self.\next\.\out\ := Sfix(0.0, 0, -17);
         pyha_update_registers(self);
     end procedure;
@@ -101,7 +98,7 @@ package body FIR_2 is
         -- reset CONSTANTS, executed before 'main'. Helps synthesis tools to determine constants.
     begin
         self.DELAY := 2;
-        self.TAPS := (Sfix(-0.040802001953125, 0, -17), Sfix(0.1103363037109375, 0, -17), Sfix(0.21150970458984375, 0, -17), Sfix(0.29248046875, 0, -17), Sfix(0.29248046875, 0, -17), Sfix(0.21150970458984375, 0, -17), Sfix(0.1103363037109375, 0, -17), Sfix(-0.040802001953125, 0, -17));
+        self.TAPS := (Sfix(7.62939453125e-06, 0, -17), Sfix(0.000152587890625, 0, -17), Sfix(7.62939453125e-06, 0, -17), Sfix(-0.00032806396484375, 0, -17), Sfix(-9.1552734375e-05, 0, -17), Sfix(0.00064849853515625, 0, -17), Sfix(0.00031280517578125, 0, -17), Sfix(-0.0011138916015625, 0, -17), Sfix(-0.0007781982421875, 0, -17), Sfix(0.00171661376953125, 0, -17), Sfix(0.001617431640625, 0, -17), Sfix(-0.002410888671875, 0, -17), Sfix(-0.00298309326171875, 0, -17), Sfix(0.0030975341796875, 0, -17), Sfix(0.0050506591796875, 0, -17), Sfix(-0.00360107421875, 0, -17), Sfix(-0.00800323486328125, 0, -17), Sfix(0.003662109375, 0, -17), Sfix(0.01206207275390625, 0, -17), Sfix(-0.0029144287109375, 0, -17), Sfix(-0.0174713134765625, 0, -17), Sfix(0.00083160400390625, 0, -17), Sfix(0.02465057373046875, 0, -17), Sfix(0.00342559814453125, 0, -17), Sfix(-0.034454345703125, 0, -17), Sfix(-0.01151275634765625, 0, -17), Sfix(0.04907989501953125, 0, -17), Sfix(0.02765655517578125, 0, -17), Sfix(-0.0761871337890625, 0, -17), Sfix(-0.0692596435546875, 0, -17), Sfix(0.1654205322265625, 0, -17), Sfix(0.4317626953125, 0, -17), Sfix(0.4317626953125, 0, -17), Sfix(0.1654205322265625, 0, -17), Sfix(-0.0692596435546875, 0, -17), Sfix(-0.0761871337890625, 0, -17), Sfix(0.02765655517578125, 0, -17), Sfix(0.04907989501953125, 0, -17), Sfix(-0.01151275634765625, 0, -17), Sfix(-0.034454345703125, 0, -17), Sfix(0.00342559814453125, 0, -17), Sfix(0.02465057373046875, 0, -17), Sfix(0.00083160400390625, 0, -17), Sfix(-0.0174713134765625, 0, -17), Sfix(-0.0029144287109375, 0, -17), Sfix(0.01206207275390625, 0, -17), Sfix(0.003662109375, 0, -17), Sfix(-0.00800323486328125, 0, -17), Sfix(-0.00360107421875, 0, -17), Sfix(0.0050506591796875, 0, -17), Sfix(0.0030975341796875, 0, -17), Sfix(-0.00298309326171875, 0, -17), Sfix(-0.002410888671875, 0, -17), Sfix(0.001617431640625, 0, -17), Sfix(0.00171661376953125, 0, -17), Sfix(-0.0007781982421875, 0, -17), Sfix(-0.0011138916015625, 0, -17), Sfix(0.00031280517578125, 0, -17), Sfix(0.00064849853515625, 0, -17), Sfix(-9.1552734375e-05, 0, -17), Sfix(-0.00032806396484375, 0, -17), Sfix(7.62939453125e-06, 0, -17), Sfix(0.000152587890625, 0, -17), Sfix(7.62939453125e-06, 0, -17));
     end procedure;
 
     procedure pyha_deepcopy(self:inout self_t; other: in self_t) is

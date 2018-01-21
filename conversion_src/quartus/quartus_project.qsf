@@ -8,9 +8,9 @@ set_global_assignment -name VHDL_SHOW_LMF_MAPPING_MESSAGES OFF
 
 set_global_assignment -name VHDL_FILE /home/gaspar/git/pyha_demo_project/conversion_src/src/util/pyha_util.vhdl
 set_global_assignment -name VHDL_FILE /home/gaspar/git/pyha_demo_project/conversion_src/src/util/typedefs.vhdl
-set_global_assignment -name VHDL_FILE /home/gaspar/git/pyha_demo_project/conversion_src/src/ComplexSfix_0.vhd
-set_global_assignment -name VHDL_FILE /home/gaspar/git/pyha_demo_project/conversion_src/src/FIR_0.vhd
-set_global_assignment -name VHDL_FILE /home/gaspar/git/pyha_demo_project/conversion_src/src/BasebandFilter_0.vhd
+set_global_assignment -name VHDL_FILE /home/gaspar/git/pyha_demo_project/conversion_src/src/Complex_0.vhd
+set_global_assignment -name VHDL_FILE /home/gaspar/git/pyha_demo_project/conversion_src/src/FIR_2.vhd
+set_global_assignment -name VHDL_FILE /home/gaspar/git/pyha_demo_project/conversion_src/src/BasebandFilter_1.vhd
 set_global_assignment -name VHDL_FILE /home/gaspar/git/pyha_demo_project/conversion_src/src/top.vhd
 set_global_assignment -name VHDL_FILE /home/gaspar/git/pyha_demo_project/conversion_src/src/util/fixed_pkg_c.vhdl
 set_global_assignment -name VHDL_FILE /home/gaspar/git/pyha_demo_project/conversion_src/src/util/fixed_float_types_c.vhdl
