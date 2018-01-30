@@ -1,4 +1,5 @@
 import numpy as np
+import pytest
 import scipy.signal
 from pyhacores.filter import FIR
 from pyha import Hardware, simulate, sims_close, Complex
@@ -22,6 +23,19 @@ class BasebandFilter(Hardware):
 
 
 def test_remez64_random_notebook():
+    np.random.seed(0)
+    inp = np.random.uniform(-1, 1, 512) + np.random.uniform(-1, 1, 512) * 1j
+    # inp *= 0.75
+
+    taps = scipy.signal.remez(64, [0, 0.2, 0.275, 0.5], [1, 0])
+    dut = BasebandFilter(taps)
+
+    sims = simulate(dut, inp)
+    assert sims_close(sims, rtol=1e-3)
+
+
+def test_remez64_random_too_much_gain():
+    pytest.xfail('Gain is too large, filter saturates')
     np.random.seed(0)
     inp = np.random.uniform(-1, 1, 512) + np.random.uniform(-1, 1, 512) * 1j
     # inp *= 0.75

@@ -1,14 +1,14 @@
 import numpy as np
-from pyha import Hardware, simulate, sims_close
+from pyha import Hardware, simulate, sims_close, Sfix
 
 
 class Lookup(Hardware):
     def __init__(self):
-        self.mem = np.random.uniform(-1, 1, 5).tolist()
-        self.counter = 0
+        self.mem = np.random.uniform(-1, 1, 5)
+        self.counter = Sfix(0, 4, 0)
 
     def main(self, x):
-        ret = self.mem[self.counter]
+        ret = self.mem[int(self.counter)]
 
 
         counter_next = self.counter + 1
