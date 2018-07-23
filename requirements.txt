@@ -1,6 +1,6 @@
 pyha==0.0.7
 pyhacores==0.1.0
-numpy==1.14.0
+numpy==1.15.0
 scipy==1.0.0
 pytest==3.3.2
 nbdime==0.4.1
