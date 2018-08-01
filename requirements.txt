@@ -3,7 +3,7 @@ pyhacores==0.1.0
 numpy==1.14.0
 scipy==1.0.0
 pytest==3.3.2
-nbdime==0.4.1
+nbdime==1.0.2
 nbval==0.9
 matplotlib==2.1.1
 pandas==0.22.0
