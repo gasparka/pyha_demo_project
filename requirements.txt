@@ -2,7 +2,7 @@ pyha==0.0.7
 pyhacores==0.1.0
 numpy==1.14.0
 scipy==1.0.0
-pytest==3.3.2
+pytest==3.7.2
 nbdime==0.4.1
 nbval==0.9
 matplotlib==2.1.1
